@@ -1,4 +1,7 @@
-name: sync stdlib + enable XDP and QP
+name: sync most of the fork with upstream stdlib
+
+# permissions:
+#   contents: write
 
 on:
   schedule:
@@ -19,10 +22,12 @@ jobs:
           git remote add upstream https://github.com/fortran-lang/stdlib.git
           git fetch upstream
 
-          git checkout -B master upstream/master
+      - name: merge upstream/master
+        run: |
+          git merge upstream/master --allow-unrelated-histories --no-edit
 
       - name: commit & push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git push --force origin master
+          git push origin master
