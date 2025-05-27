@@ -11,13 +11,13 @@ C_PREPROCESSED = (
 )
 
 def pre_process_fypp(args):
-    """use fypp to preprocess all source files. 
+    """use fypp to preprocess all source files.
 
     Processed files will be dumped at <current_folder>/temp/<file.f90> or <file.F90>
 
     Parameters
     ----------
-    args : 
+    args :
         CLI arguments.
     """
     kwd = []
@@ -51,7 +51,7 @@ def pre_process_fypp(args):
     fypp_files = [os.path.join(root, file) for folder in folders
                   for root, _, files in os.walk(folder)
                   for file in files if file.endswith(".fypp")]
-    
+
     def process_f(file):
         source_file = file
         root = os.path.dirname(file)
@@ -61,13 +61,13 @@ def pre_process_fypp(args):
         sfx = 'f90' if basename not in C_PREPROCESSED else 'F90'
         target_file = root+os.sep+'temp' + os.sep + basename + '.' + sfx
         tool.process_file(source_file, target_file)
-    
+
     Parallel(n_jobs=args.njob)(delayed(process_f)(f) for f in fypp_files)
-    
+
     return
 
 
-def deploy_stdlib_fpm(with_ilp64):
+def deploy_stdlib_fpm(with_ilp64, with_xdp, with_qp):
     """create the stdlib-fpm folder for backwards compatibility (to be deprecated)
     """
     import shutil
@@ -75,11 +75,12 @@ def deploy_stdlib_fpm(with_ilp64):
         "test_hash_functions.f90",
         "f18estop.f90",
     )
-    
-    if with_ilp64:
-        base_folder = 'stdlib-fpm-ilp64'
-    else:
-        base_folder = 'stdlib-fpm'        
+
+    base = 'stdlib-fpm'
+    if args.with_ilp64: base += '-ilp64'
+    if args.with_xdp:   base += '-xdp'
+    if args.with_qp:    base += '-qp'
+    base_folder = base
 
     if not os.path.exists(base_folder+os.sep+'src'):
         os.makedirs(base_folder+os.sep+'src')
@@ -137,7 +138,7 @@ if __name__ == "__main__":
     parser.add_argument("--with_xdp",action='store_true', help="Include WITH_XDP in the command")
     parser.add_argument("--with_ilp64",action='store_true', help="Include WITH_ILP64 to build 64-bit integer BLAS/LAPACK")
     parser.add_argument("--lnumbering",action='store_true', help="Add line numbering in preprocessed files")
-    parser.add_argument("--deploy_stdlib_fpm",action='store_true', help="create the stdlib-fpm folder")    
+    parser.add_argument("--deploy_stdlib_fpm",action='store_true', help="create the stdlib-fpm folder")
     # external libraries arguments
     parser.add_argument("--build", action='store_true', help="Build the project")
 
@@ -154,7 +155,7 @@ if __name__ == "__main__":
     # pre process the meta programming fypp files
     pre_process_fypp(args)
     if args.deploy_stdlib_fpm:
-        deploy_stdlib_fpm(args.with_ilp64)
+        deploy_stdlib_fpm(args.with_ilp64, args.with_xdp, args.with_qp)
     #==========================================
     # build using fpm
     if args.build:

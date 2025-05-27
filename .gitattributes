@@ -31,4 +31,7 @@ codecov.yml export-ignore
 .github export-ignore
 
 # Perform substitutions when `git export`ing these files
-.VERSION export-subst 
+.VERSION export-subst
+
+.github/workflows/fpm-deployment.yml
+.github/workflows/sync.yml
