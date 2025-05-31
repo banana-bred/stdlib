@@ -1,6 +1,6 @@
 name: fpm-deployment
 
-on: [push, pull, pull_request]
+on: [push, pull_request]
 
 jobs:
   test:
