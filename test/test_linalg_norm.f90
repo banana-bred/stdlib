@@ -17,60 +17,60 @@ module test_linalg_norm
         
         allocate(tests(0))
         
-        tests = [tests,new_unittest("strided_1d_norm_s",test_strided_1d_s)]
-        tests = [tests,new_unittest("norm_s_1d",test_norm_s_1d)]        
-        tests = [tests,new_unittest("norm_s_2d",test_norm_s_2d)]        
-        tests = [tests,new_unittest("norm_s_3d",test_norm_s_3d)]        
-        tests = [tests,new_unittest("norm2_s_2d",test_norm2_s_2d)]        
-        tests = [tests,new_unittest("maxabs_s_2d",test_maxabs_s_2d)]        
-        tests = [tests,new_unittest("norm_dimmed_s_2d",test_norm_dimmed_s_2d)]        
-        tests = [tests,new_unittest("norm2_s_3d",test_norm2_s_3d)]        
-        tests = [tests,new_unittest("maxabs_s_3d",test_maxabs_s_3d)]        
-        tests = [tests,new_unittest("norm_dimmed_s_3d",test_norm_dimmed_s_3d)]        
-        tests = [tests,new_unittest("strided_1d_norm_d",test_strided_1d_d)]
-        tests = [tests,new_unittest("norm_d_1d",test_norm_d_1d)]        
-        tests = [tests,new_unittest("norm_d_2d",test_norm_d_2d)]        
-        tests = [tests,new_unittest("norm_d_3d",test_norm_d_3d)]        
-        tests = [tests,new_unittest("norm2_d_2d",test_norm2_d_2d)]        
-        tests = [tests,new_unittest("maxabs_d_2d",test_maxabs_d_2d)]        
-        tests = [tests,new_unittest("norm_dimmed_d_2d",test_norm_dimmed_d_2d)]        
-        tests = [tests,new_unittest("norm2_d_3d",test_norm2_d_3d)]        
-        tests = [tests,new_unittest("maxabs_d_3d",test_maxabs_d_3d)]        
-        tests = [tests,new_unittest("norm_dimmed_d_3d",test_norm_dimmed_d_3d)]        
-        tests = [tests,new_unittest("strided_1d_norm_q",test_strided_1d_q)]
-        tests = [tests,new_unittest("norm_q_1d",test_norm_q_1d)]        
-        tests = [tests,new_unittest("norm_q_2d",test_norm_q_2d)]        
-        tests = [tests,new_unittest("norm_q_3d",test_norm_q_3d)]        
-        tests = [tests,new_unittest("norm2_q_2d",test_norm2_q_2d)]        
-        tests = [tests,new_unittest("maxabs_q_2d",test_maxabs_q_2d)]        
-        tests = [tests,new_unittest("norm_dimmed_q_2d",test_norm_dimmed_q_2d)]        
-        tests = [tests,new_unittest("norm2_q_3d",test_norm2_q_3d)]        
-        tests = [tests,new_unittest("maxabs_q_3d",test_maxabs_q_3d)]        
-        tests = [tests,new_unittest("norm_dimmed_q_3d",test_norm_dimmed_q_3d)]        
-        tests = [tests,new_unittest("strided_1d_norm_c",test_strided_1d_c)]
-        tests = [tests,new_unittest("norm_c_1d",test_norm_c_1d)]        
-        tests = [tests,new_unittest("norm_c_2d",test_norm_c_2d)]        
-        tests = [tests,new_unittest("norm_c_3d",test_norm_c_3d)]        
-        tests = [tests,new_unittest("maxabs_c_2d",test_maxabs_c_2d)]        
-        tests = [tests,new_unittest("norm_dimmed_c_2d",test_norm_dimmed_c_2d)]        
-        tests = [tests,new_unittest("maxabs_c_3d",test_maxabs_c_3d)]        
-        tests = [tests,new_unittest("norm_dimmed_c_3d",test_norm_dimmed_c_3d)]        
-        tests = [tests,new_unittest("strided_1d_norm_z",test_strided_1d_z)]
-        tests = [tests,new_unittest("norm_z_1d",test_norm_z_1d)]        
-        tests = [tests,new_unittest("norm_z_2d",test_norm_z_2d)]        
-        tests = [tests,new_unittest("norm_z_3d",test_norm_z_3d)]        
-        tests = [tests,new_unittest("maxabs_z_2d",test_maxabs_z_2d)]        
-        tests = [tests,new_unittest("norm_dimmed_z_2d",test_norm_dimmed_z_2d)]        
-        tests = [tests,new_unittest("maxabs_z_3d",test_maxabs_z_3d)]        
-        tests = [tests,new_unittest("norm_dimmed_z_3d",test_norm_dimmed_z_3d)]        
-        tests = [tests,new_unittest("strided_1d_norm_w",test_strided_1d_w)]
-        tests = [tests,new_unittest("norm_w_1d",test_norm_w_1d)]        
-        tests = [tests,new_unittest("norm_w_2d",test_norm_w_2d)]        
-        tests = [tests,new_unittest("norm_w_3d",test_norm_w_3d)]        
-        tests = [tests,new_unittest("maxabs_w_2d",test_maxabs_w_2d)]        
-        tests = [tests,new_unittest("norm_dimmed_w_2d",test_norm_dimmed_w_2d)]        
-        tests = [tests,new_unittest("maxabs_w_3d",test_maxabs_w_3d)]        
-        tests = [tests,new_unittest("norm_dimmed_w_3d",test_norm_dimmed_w_3d)]        
+        call add_test(tests,new_unittest("strided_1d_norm_s",test_strided_1d_s))
+        call add_test(tests,new_unittest("norm_s_1d",test_norm_s_1d))      
+        call add_test(tests,new_unittest("norm_s_2d",test_norm_s_2d))      
+        call add_test(tests,new_unittest("norm_s_3d",test_norm_s_3d))      
+        call add_test(tests,new_unittest("norm2_s_2d",test_norm2_s_2d))        
+        call add_test(tests,new_unittest("maxabs_s_2d",test_maxabs_s_2d))        
+        call add_test(tests,new_unittest("norm_dimmed_s_2d",test_norm_dimmed_s_2d))        
+        call add_test(tests,new_unittest("norm2_s_3d",test_norm2_s_3d))        
+        call add_test(tests,new_unittest("maxabs_s_3d",test_maxabs_s_3d))        
+        call add_test(tests,new_unittest("norm_dimmed_s_3d",test_norm_dimmed_s_3d))        
+        call add_test(tests,new_unittest("strided_1d_norm_d",test_strided_1d_d))
+        call add_test(tests,new_unittest("norm_d_1d",test_norm_d_1d))      
+        call add_test(tests,new_unittest("norm_d_2d",test_norm_d_2d))      
+        call add_test(tests,new_unittest("norm_d_3d",test_norm_d_3d))      
+        call add_test(tests,new_unittest("norm2_d_2d",test_norm2_d_2d))        
+        call add_test(tests,new_unittest("maxabs_d_2d",test_maxabs_d_2d))        
+        call add_test(tests,new_unittest("norm_dimmed_d_2d",test_norm_dimmed_d_2d))        
+        call add_test(tests,new_unittest("norm2_d_3d",test_norm2_d_3d))        
+        call add_test(tests,new_unittest("maxabs_d_3d",test_maxabs_d_3d))        
+        call add_test(tests,new_unittest("norm_dimmed_d_3d",test_norm_dimmed_d_3d))        
+        call add_test(tests,new_unittest("strided_1d_norm_q",test_strided_1d_q))
+        call add_test(tests,new_unittest("norm_q_1d",test_norm_q_1d))      
+        call add_test(tests,new_unittest("norm_q_2d",test_norm_q_2d))      
+        call add_test(tests,new_unittest("norm_q_3d",test_norm_q_3d))      
+        call add_test(tests,new_unittest("norm2_q_2d",test_norm2_q_2d))        
+        call add_test(tests,new_unittest("maxabs_q_2d",test_maxabs_q_2d))        
+        call add_test(tests,new_unittest("norm_dimmed_q_2d",test_norm_dimmed_q_2d))        
+        call add_test(tests,new_unittest("norm2_q_3d",test_norm2_q_3d))        
+        call add_test(tests,new_unittest("maxabs_q_3d",test_maxabs_q_3d))        
+        call add_test(tests,new_unittest("norm_dimmed_q_3d",test_norm_dimmed_q_3d))        
+        call add_test(tests,new_unittest("strided_1d_norm_c",test_strided_1d_c))
+        call add_test(tests,new_unittest("norm_c_1d",test_norm_c_1d))      
+        call add_test(tests,new_unittest("norm_c_2d",test_norm_c_2d))      
+        call add_test(tests,new_unittest("norm_c_3d",test_norm_c_3d))      
+        call add_test(tests,new_unittest("maxabs_c_2d",test_maxabs_c_2d))        
+        call add_test(tests,new_unittest("norm_dimmed_c_2d",test_norm_dimmed_c_2d))        
+        call add_test(tests,new_unittest("maxabs_c_3d",test_maxabs_c_3d))        
+        call add_test(tests,new_unittest("norm_dimmed_c_3d",test_norm_dimmed_c_3d))        
+        call add_test(tests,new_unittest("strided_1d_norm_z",test_strided_1d_z))
+        call add_test(tests,new_unittest("norm_z_1d",test_norm_z_1d))      
+        call add_test(tests,new_unittest("norm_z_2d",test_norm_z_2d))      
+        call add_test(tests,new_unittest("norm_z_3d",test_norm_z_3d))      
+        call add_test(tests,new_unittest("maxabs_z_2d",test_maxabs_z_2d))        
+        call add_test(tests,new_unittest("norm_dimmed_z_2d",test_norm_dimmed_z_2d))        
+        call add_test(tests,new_unittest("maxabs_z_3d",test_maxabs_z_3d))        
+        call add_test(tests,new_unittest("norm_dimmed_z_3d",test_norm_dimmed_z_3d))        
+        call add_test(tests,new_unittest("strided_1d_norm_w",test_strided_1d_w))
+        call add_test(tests,new_unittest("norm_w_1d",test_norm_w_1d))      
+        call add_test(tests,new_unittest("norm_w_2d",test_norm_w_2d))      
+        call add_test(tests,new_unittest("norm_w_3d",test_norm_w_3d))      
+        call add_test(tests,new_unittest("maxabs_w_2d",test_maxabs_w_2d))        
+        call add_test(tests,new_unittest("norm_dimmed_w_2d",test_norm_dimmed_w_2d))        
+        call add_test(tests,new_unittest("maxabs_w_3d",test_maxabs_w_3d))        
+        call add_test(tests,new_unittest("norm_dimmed_w_3d",test_norm_dimmed_w_3d))        
 
     end subroutine test_vector_norms
     
@@ -2280,6 +2280,26 @@ module test_linalg_norm
     
 
 
+    ! gcc-15 bugfix utility
+    subroutine add_test(tests,new_test)
+        type(unittest_type), allocatable, intent(inout) :: tests(:)    
+        type(unittest_type), intent(in) :: new_test
+        
+        integer :: n
+        type(unittest_type), allocatable :: new_tests(:)
+        
+        if (allocated(tests)) then 
+            n = size(tests)
+        else
+            n = 0
+        end if
+        
+        allocate(new_tests(n+1))
+        if (n>0) new_tests(1:n) = tests(1:n)
+                 new_tests(1+n) = new_test
+        call move_alloc(from=new_tests,to=tests)        
+        
+    end subroutine add_test
 
 end module test_linalg_norm
 
