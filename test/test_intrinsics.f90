@@ -468,6 +468,27 @@ subroutine test_dot_product(error)
         call check(error, all(err(:)<tolerance) , "complex dot_product is not accurate" )
         if (allocated(error)) return
     end block
+
+    block ! test for https://github.com/fortran-lang/stdlib/issues/1016
+        complex(sp) :: x(128), y(128)
+        real(sp) :: z(128,2)
+        real(sp), parameter :: tolerance = epsilon(1._sp)*100000
+        real(sp) :: err(2)
+        complex(sp) :: p(3)
+
+        call random_number(z)
+        x%re = z(:, 1); x%im = z(:, 2)
+        call random_number(z)
+        y%re = z(:, 1); y%im = z(:, 2)
+        
+        p(1) = dot_product(x,y) ! compiler intrinsic
+        p(2) = stdlib_dot_product_kahan(x,y) ! chunked Kahan dot_product
+        p(3) = stdlib_dot_product(x,y)       ! chunked dot_product
+        err(1:2) = sqrt((p(2:3)%re - p(1)%re)**2 + (p(2:3)%im - p(1)%im)**2)
+        
+        call check(error, all(err(:)<tolerance) , "complex dot_product does not conform to the standard" )
+        if (allocated(error)) return
+    end block
     block
         complex(dp), allocatable :: x(:)
         real(dp), parameter :: total_sum = 4*atan(1._dp), tolerance = epsilon(1._dp)*100
@@ -493,6 +514,27 @@ subroutine test_dot_product(error)
         call check(error, all(err(:)<tolerance) , "complex dot_product is not accurate" )
         if (allocated(error)) return
     end block
+
+    block ! test for https://github.com/fortran-lang/stdlib/issues/1016
+        complex(dp) :: x(128), y(128)
+        real(dp) :: z(128,2)
+        real(dp), parameter :: tolerance = epsilon(1._dp)*100000
+        real(dp) :: err(2)
+        complex(dp) :: p(3)
+
+        call random_number(z)
+        x%re = z(:, 1); x%im = z(:, 2)
+        call random_number(z)
+        y%re = z(:, 1); y%im = z(:, 2)
+        
+        p(1) = dot_product(x,y) ! compiler intrinsic
+        p(2) = stdlib_dot_product_kahan(x,y) ! chunked Kahan dot_product
+        p(3) = stdlib_dot_product(x,y)       ! chunked dot_product
+        err(1:2) = sqrt((p(2:3)%re - p(1)%re)**2 + (p(2:3)%im - p(1)%im)**2)
+        
+        call check(error, all(err(:)<tolerance) , "complex dot_product does not conform to the standard" )
+        if (allocated(error)) return
+    end block
     block
         complex(xdp), allocatable :: x(:)
         real(xdp), parameter :: total_sum = 4*atan(1._xdp), tolerance = epsilon(1._xdp)*100
@@ -516,6 +558,27 @@ subroutine test_dot_product(error)
         err(1:ncalc) = abs(1._xdp-xsum(1:ncalc)%re/(2*total_sum))
          
         call check(error, all(err(:)<tolerance) , "complex dot_product is not accurate" )
+        if (allocated(error)) return
+    end block
+
+    block ! test for https://github.com/fortran-lang/stdlib/issues/1016
+        complex(xdp) :: x(128), y(128)
+        real(xdp) :: z(128,2)
+        real(xdp), parameter :: tolerance = epsilon(1._xdp)*100000
+        real(xdp) :: err(2)
+        complex(xdp) :: p(3)
+
+        call random_number(z)
+        x%re = z(:, 1); x%im = z(:, 2)
+        call random_number(z)
+        y%re = z(:, 1); y%im = z(:, 2)
+        
+        p(1) = dot_product(x,y) ! compiler intrinsic
+        p(2) = stdlib_dot_product_kahan(x,y) ! chunked Kahan dot_product
+        p(3) = stdlib_dot_product(x,y)       ! chunked dot_product
+        err(1:2) = sqrt((p(2:3)%re - p(1)%re)**2 + (p(2:3)%im - p(1)%im)**2)
+        
+        call check(error, all(err(:)<tolerance) , "complex dot_product does not conform to the standard" )
         if (allocated(error)) return
     end block
 

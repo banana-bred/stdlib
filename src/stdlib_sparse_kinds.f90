@@ -2351,5 +2351,5 @@ contains
         end do
     end subroutine
 
-    
+
 end module stdlib_sparse_kinds
