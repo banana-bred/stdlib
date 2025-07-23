@@ -19,30 +19,30 @@ module test_linalg_schur
         
         allocate(tests(0))
         
-        tests = [tests,new_unittest("schur_api_s",test_schur_api_s), &
-                       new_unittest("schur_random_s",test_schur_random_s), &
-                       new_unittest("schur_symmetric_s",test_schur_symmetric_s)]
-        tests = [tests,new_unittest("schur_api_d",test_schur_api_d), &
-                       new_unittest("schur_random_d",test_schur_random_d), &
-                       new_unittest("schur_symmetric_d",test_schur_symmetric_d)]
-        tests = [tests,new_unittest("schur_api_x",test_schur_api_x), &
-                       new_unittest("schur_random_x",test_schur_random_x), &
-                       new_unittest("schur_symmetric_x",test_schur_symmetric_x)]
-        tests = [tests,new_unittest("schur_api_q",test_schur_api_q), &
-                       new_unittest("schur_random_q",test_schur_random_q), &
-                       new_unittest("schur_symmetric_q",test_schur_symmetric_q)]
-        tests = [tests,new_unittest("schur_api_c",test_schur_api_c), &
-                       new_unittest("schur_random_c",test_schur_random_c), &
-                       new_unittest("schur_symmetric_c",test_schur_symmetric_c)]
-        tests = [tests,new_unittest("schur_api_z",test_schur_api_z), &
-                       new_unittest("schur_random_z",test_schur_random_z), &
-                       new_unittest("schur_symmetric_z",test_schur_symmetric_z)]
-        tests = [tests,new_unittest("schur_api_y",test_schur_api_y), &
-                       new_unittest("schur_random_y",test_schur_random_y), &
-                       new_unittest("schur_symmetric_y",test_schur_symmetric_y)]
-        tests = [tests,new_unittest("schur_api_w",test_schur_api_w), &
-                       new_unittest("schur_random_w",test_schur_random_w), &
-                       new_unittest("schur_symmetric_w",test_schur_symmetric_w)]
+        call add_test(tests,new_unittest("schur_api_s",test_schur_api_s))
+        call add_test(tests,new_unittest("schur_random_s",test_schur_random_s))
+        call add_test(tests,new_unittest("schur_symmetric_s",test_schur_symmetric_s))
+        call add_test(tests,new_unittest("schur_api_d",test_schur_api_d))
+        call add_test(tests,new_unittest("schur_random_d",test_schur_random_d))
+        call add_test(tests,new_unittest("schur_symmetric_d",test_schur_symmetric_d))
+        call add_test(tests,new_unittest("schur_api_x",test_schur_api_x))
+        call add_test(tests,new_unittest("schur_random_x",test_schur_random_x))
+        call add_test(tests,new_unittest("schur_symmetric_x",test_schur_symmetric_x))
+        call add_test(tests,new_unittest("schur_api_q",test_schur_api_q))
+        call add_test(tests,new_unittest("schur_random_q",test_schur_random_q))
+        call add_test(tests,new_unittest("schur_symmetric_q",test_schur_symmetric_q))
+        call add_test(tests,new_unittest("schur_api_c",test_schur_api_c))
+        call add_test(tests,new_unittest("schur_random_c",test_schur_random_c))
+        call add_test(tests,new_unittest("schur_symmetric_c",test_schur_symmetric_c))
+        call add_test(tests,new_unittest("schur_api_z",test_schur_api_z))
+        call add_test(tests,new_unittest("schur_random_z",test_schur_random_z))
+        call add_test(tests,new_unittest("schur_symmetric_z",test_schur_symmetric_z))
+        call add_test(tests,new_unittest("schur_api_y",test_schur_api_y))
+        call add_test(tests,new_unittest("schur_random_y",test_schur_random_y))
+        call add_test(tests,new_unittest("schur_symmetric_y",test_schur_symmetric_y))
+        call add_test(tests,new_unittest("schur_api_w",test_schur_api_w))
+        call add_test(tests,new_unittest("schur_random_w",test_schur_random_w))
+        call add_test(tests,new_unittest("schur_symmetric_w",test_schur_symmetric_w))
 
     end subroutine test_schur_decomposition
 
@@ -195,7 +195,6 @@ module test_linalg_schur
 
     end subroutine test_schur_symmetric_s
 
-
     subroutine test_schur_api_d(error)
         type(error_type), allocatable, intent(out) :: error
 
@@ -343,7 +342,6 @@ module test_linalg_schur
         end function schur_error        
 
     end subroutine test_schur_symmetric_d
-
 
     subroutine test_schur_api_x(error)
         type(error_type), allocatable, intent(out) :: error
@@ -493,7 +491,6 @@ module test_linalg_schur
 
     end subroutine test_schur_symmetric_x
 
-
     subroutine test_schur_api_q(error)
         type(error_type), allocatable, intent(out) :: error
 
@@ -641,7 +638,6 @@ module test_linalg_schur
         end function schur_error        
 
     end subroutine test_schur_symmetric_q
-
 
     subroutine test_schur_api_c(error)
         type(error_type), allocatable, intent(out) :: error
@@ -797,7 +793,6 @@ module test_linalg_schur
 
     end subroutine test_schur_symmetric_c
 
-
     subroutine test_schur_api_z(error)
         type(error_type), allocatable, intent(out) :: error
 
@@ -952,7 +947,6 @@ module test_linalg_schur
 
     end subroutine test_schur_symmetric_z
 
-
     subroutine test_schur_api_y(error)
         type(error_type), allocatable, intent(out) :: error
 
@@ -1106,7 +1100,6 @@ module test_linalg_schur
         end function schur_error        
 
     end subroutine test_schur_symmetric_y
-
 
     subroutine test_schur_api_w(error)
         type(error_type), allocatable, intent(out) :: error
@@ -1263,6 +1256,26 @@ module test_linalg_schur
     end subroutine test_schur_symmetric_w
 
 
+    ! gcc-15 bugfix utility
+    subroutine add_test(tests,new_test)
+        type(unittest_type), allocatable, intent(inout) :: tests(:)    
+        type(unittest_type), intent(in) :: new_test
+        
+        integer :: n
+        type(unittest_type), allocatable :: new_tests(:)
+        
+        if (allocated(tests)) then 
+            n = size(tests)
+        else
+            n = 0
+        end if
+        
+        allocate(new_tests(n+1))
+        if (n>0) new_tests(1:n) = tests(1:n)
+                 new_tests(1+n) = new_test
+        call move_alloc(from=new_tests,to=tests)        
+        
+    end subroutine add_test
 
 end module test_linalg_schur
 
