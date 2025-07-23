@@ -19,14 +19,14 @@ module test_linalg_qr
         
         allocate(tests(0))
         
-        tests = [tests,new_unittest("qr_random_s",test_qr_random_s)]
-        tests = [tests,new_unittest("qr_random_d",test_qr_random_d)]
-        tests = [tests,new_unittest("qr_random_x",test_qr_random_x)]
-        tests = [tests,new_unittest("qr_random_q",test_qr_random_q)]
-        tests = [tests,new_unittest("qr_random_c",test_qr_random_c)]
-        tests = [tests,new_unittest("qr_random_z",test_qr_random_z)]
-        tests = [tests,new_unittest("qr_random_y",test_qr_random_y)]
-        tests = [tests,new_unittest("qr_random_w",test_qr_random_w)]
+        call add_test(tests,new_unittest("qr_random_s",test_qr_random_s))
+        call add_test(tests,new_unittest("qr_random_d",test_qr_random_d))
+        call add_test(tests,new_unittest("qr_random_x",test_qr_random_x))
+        call add_test(tests,new_unittest("qr_random_q",test_qr_random_q))
+        call add_test(tests,new_unittest("qr_random_c",test_qr_random_c))
+        call add_test(tests,new_unittest("qr_random_z",test_qr_random_z))
+        call add_test(tests,new_unittest("qr_random_y",test_qr_random_y))
+        call add_test(tests,new_unittest("qr_random_w",test_qr_random_w))
 
     end subroutine test_qr_factorization
 
@@ -628,6 +628,26 @@ module test_linalg_qr
     end subroutine test_qr_random_w
 
 
+    ! gcc-15 bugfix utility
+    subroutine add_test(tests,new_test)
+        type(unittest_type), allocatable, intent(inout) :: tests(:)    
+        type(unittest_type), intent(in) :: new_test
+        
+        integer :: n
+        type(unittest_type), allocatable :: new_tests(:)
+        
+        if (allocated(tests)) then 
+            n = size(tests)
+        else
+            n = 0
+        end if
+        
+        allocate(new_tests(n+1))
+        if (n>0) new_tests(1:n) = tests(1:n)
+                 new_tests(1+n) = new_test
+        call move_alloc(from=new_tests,to=tests)        
+        
+    end subroutine add_test
 
 end module test_linalg_qr
 

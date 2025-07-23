@@ -18,42 +18,42 @@ module test_linalg_pseudoinverse
         
         allocate(tests(0))
 
-        tests = [tests,new_unittest("s_eye_pseudoinverse",test_s_eye_pseudoinverse)]        
-        tests = [tests,new_unittest("d_eye_pseudoinverse",test_d_eye_pseudoinverse)]        
-        tests = [tests,new_unittest("x_eye_pseudoinverse",test_x_eye_pseudoinverse)]        
-        tests = [tests,new_unittest("q_eye_pseudoinverse",test_q_eye_pseudoinverse)]        
-        tests = [tests,new_unittest("s_square_pseudoinverse",test_s_square_pseudoinverse), &
-                       new_unittest("s_tall_pseudoinverse",test_s_tall_pseudoinverse), &
-                       new_unittest("s_wide_pseudoinverse",test_s_wide_pseudoinverse), &
-                       new_unittest("s_singular_pseudoinverse",test_s_singular_pseudoinverse)]
-        tests = [tests,new_unittest("d_square_pseudoinverse",test_d_square_pseudoinverse), &
-                       new_unittest("d_tall_pseudoinverse",test_d_tall_pseudoinverse), &
-                       new_unittest("d_wide_pseudoinverse",test_d_wide_pseudoinverse), &
-                       new_unittest("d_singular_pseudoinverse",test_d_singular_pseudoinverse)]
-        tests = [tests,new_unittest("x_square_pseudoinverse",test_x_square_pseudoinverse), &
-                       new_unittest("x_tall_pseudoinverse",test_x_tall_pseudoinverse), &
-                       new_unittest("x_wide_pseudoinverse",test_x_wide_pseudoinverse), &
-                       new_unittest("x_singular_pseudoinverse",test_x_singular_pseudoinverse)]
-        tests = [tests,new_unittest("q_square_pseudoinverse",test_q_square_pseudoinverse), &
-                       new_unittest("q_tall_pseudoinverse",test_q_tall_pseudoinverse), &
-                       new_unittest("q_wide_pseudoinverse",test_q_wide_pseudoinverse), &
-                       new_unittest("q_singular_pseudoinverse",test_q_singular_pseudoinverse)]
-        tests = [tests,new_unittest("c_square_pseudoinverse",test_c_square_pseudoinverse), &
-                       new_unittest("c_tall_pseudoinverse",test_c_tall_pseudoinverse), &
-                       new_unittest("c_wide_pseudoinverse",test_c_wide_pseudoinverse), &
-                       new_unittest("c_singular_pseudoinverse",test_c_singular_pseudoinverse)]
-        tests = [tests,new_unittest("z_square_pseudoinverse",test_z_square_pseudoinverse), &
-                       new_unittest("z_tall_pseudoinverse",test_z_tall_pseudoinverse), &
-                       new_unittest("z_wide_pseudoinverse",test_z_wide_pseudoinverse), &
-                       new_unittest("z_singular_pseudoinverse",test_z_singular_pseudoinverse)]
-        tests = [tests,new_unittest("y_square_pseudoinverse",test_y_square_pseudoinverse), &
-                       new_unittest("y_tall_pseudoinverse",test_y_tall_pseudoinverse), &
-                       new_unittest("y_wide_pseudoinverse",test_y_wide_pseudoinverse), &
-                       new_unittest("y_singular_pseudoinverse",test_y_singular_pseudoinverse)]
-        tests = [tests,new_unittest("w_square_pseudoinverse",test_w_square_pseudoinverse), &
-                       new_unittest("w_tall_pseudoinverse",test_w_tall_pseudoinverse), &
-                       new_unittest("w_wide_pseudoinverse",test_w_wide_pseudoinverse), &
-                       new_unittest("w_singular_pseudoinverse",test_w_singular_pseudoinverse)]
+        call add_test(tests,new_unittest("s_eye_pseudoinverse",test_s_eye_pseudoinverse))       
+        call add_test(tests,new_unittest("d_eye_pseudoinverse",test_d_eye_pseudoinverse))       
+        call add_test(tests,new_unittest("x_eye_pseudoinverse",test_x_eye_pseudoinverse))       
+        call add_test(tests,new_unittest("q_eye_pseudoinverse",test_q_eye_pseudoinverse))       
+        call add_test(tests,new_unittest("s_square_pseudoinverse",test_s_square_pseudoinverse))
+        call add_test(tests,new_unittest("s_tall_pseudoinverse",test_s_tall_pseudoinverse))
+        call add_test(tests,new_unittest("s_wide_pseudoinverse",test_s_wide_pseudoinverse))
+        call add_test(tests,new_unittest("s_singular_pseudoinverse",test_s_singular_pseudoinverse))
+        call add_test(tests,new_unittest("d_square_pseudoinverse",test_d_square_pseudoinverse))
+        call add_test(tests,new_unittest("d_tall_pseudoinverse",test_d_tall_pseudoinverse))
+        call add_test(tests,new_unittest("d_wide_pseudoinverse",test_d_wide_pseudoinverse))
+        call add_test(tests,new_unittest("d_singular_pseudoinverse",test_d_singular_pseudoinverse))
+        call add_test(tests,new_unittest("x_square_pseudoinverse",test_x_square_pseudoinverse))
+        call add_test(tests,new_unittest("x_tall_pseudoinverse",test_x_tall_pseudoinverse))
+        call add_test(tests,new_unittest("x_wide_pseudoinverse",test_x_wide_pseudoinverse))
+        call add_test(tests,new_unittest("x_singular_pseudoinverse",test_x_singular_pseudoinverse))
+        call add_test(tests,new_unittest("q_square_pseudoinverse",test_q_square_pseudoinverse))
+        call add_test(tests,new_unittest("q_tall_pseudoinverse",test_q_tall_pseudoinverse))
+        call add_test(tests,new_unittest("q_wide_pseudoinverse",test_q_wide_pseudoinverse))
+        call add_test(tests,new_unittest("q_singular_pseudoinverse",test_q_singular_pseudoinverse))
+        call add_test(tests,new_unittest("c_square_pseudoinverse",test_c_square_pseudoinverse))
+        call add_test(tests,new_unittest("c_tall_pseudoinverse",test_c_tall_pseudoinverse))
+        call add_test(tests,new_unittest("c_wide_pseudoinverse",test_c_wide_pseudoinverse))
+        call add_test(tests,new_unittest("c_singular_pseudoinverse",test_c_singular_pseudoinverse))
+        call add_test(tests,new_unittest("z_square_pseudoinverse",test_z_square_pseudoinverse))
+        call add_test(tests,new_unittest("z_tall_pseudoinverse",test_z_tall_pseudoinverse))
+        call add_test(tests,new_unittest("z_wide_pseudoinverse",test_z_wide_pseudoinverse))
+        call add_test(tests,new_unittest("z_singular_pseudoinverse",test_z_singular_pseudoinverse))
+        call add_test(tests,new_unittest("y_square_pseudoinverse",test_y_square_pseudoinverse))
+        call add_test(tests,new_unittest("y_tall_pseudoinverse",test_y_tall_pseudoinverse))
+        call add_test(tests,new_unittest("y_wide_pseudoinverse",test_y_wide_pseudoinverse))
+        call add_test(tests,new_unittest("y_singular_pseudoinverse",test_y_singular_pseudoinverse))
+        call add_test(tests,new_unittest("w_square_pseudoinverse",test_w_square_pseudoinverse))
+        call add_test(tests,new_unittest("w_tall_pseudoinverse",test_w_tall_pseudoinverse))
+        call add_test(tests,new_unittest("w_wide_pseudoinverse",test_w_wide_pseudoinverse))
+        call add_test(tests,new_unittest("w_singular_pseudoinverse",test_w_singular_pseudoinverse))
 
     end subroutine test_pseudoinverse_matrix
 
@@ -1143,6 +1143,27 @@ module test_linalg_pseudoinverse
 
     end subroutine test_w_singular_pseudoinverse
 
+
+    ! gcc-15 bugfix utility
+    subroutine add_test(tests,new_test)
+        type(unittest_type), allocatable, intent(inout) :: tests(:)    
+        type(unittest_type), intent(in) :: new_test
+        
+        integer :: n
+        type(unittest_type), allocatable :: new_tests(:)
+        
+        if (allocated(tests)) then 
+            n = size(tests)
+        else
+            n = 0
+        end if
+        
+        allocate(new_tests(n+1))
+        if (n>0) new_tests(1:n) = tests(1:n)
+                 new_tests(1+n) = new_test
+        call move_alloc(from=new_tests,to=tests)        
+        
+    end subroutine add_test
 
 end module test_linalg_pseudoinverse
 
