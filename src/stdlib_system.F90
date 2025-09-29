@@ -2,7 +2,7 @@ module stdlib_system
 use, intrinsic :: iso_c_binding, only : c_int, c_long, c_ptr, c_null_ptr, c_int64_t, c_size_t, &
     c_f_pointer
 use stdlib_kinds, only: int64, dp, c_bool, c_char
-use stdlib_strings, only: to_c_char, find
+use stdlib_strings, only: to_c_char, find, to_string
 use stdlib_string_type, only: string_type
 use stdlib_optval, only: optval
 use stdlib_error, only: state_type, STDLIB_SUCCESS, STDLIB_FS_ERROR
@@ -104,9 +104,12 @@ public :: dir_name
 !!
 !!### Description
 !! 
-!! This function checks if a given file system path is a directory. It is cross-platform and utilizes
-!! native system calls. It supports common operating systems such as Linux, macOS, 
-!! Windows, and various UNIX-like environments. On unsupported operating systems, the function will return `.false.`.
+!! This function checks if a given file system path is a directory. 
+!! It follows symbolic links to return the status of the `target`.
+!!
+!! It is cross-platform and utilizes native system calls. 
+!! It supports common operating systems such as Linux, macOS, Windows, and various UNIX-like environments. 
+!! On unsupported operating systems, the function will return `.false.`.
 !!
 public :: is_directory
 
@@ -158,6 +161,32 @@ public :: remove_directory
 
 !! version: experimental
 !!
+!! Gets the current working directory of the process
+!! ([Specification](../page/specs/stdlib_system.html#get_cwd))
+!!
+!! ### Summary
+!! Gets the current working directory.
+!!
+!! ### Description
+!! This subroutine gets the current working directory the process is executing from.
+!!
+public :: get_cwd
+
+!! version: experimental
+!!
+!! Sets the current working directory of the process
+!! ([Specification](../page/specs/stdlib_system.html#set_cwd))
+!!
+!! ### Summary
+!! Changes the current working directory to the one specified.
+!!
+!! ### Description
+!! This subroutine sets the current working directory the process is executing from.
+!!
+public :: set_cwd
+
+!! version: experimental
+!!
 !! Deletes a specified file from the filesystem.
 !! ([Specification](../page/specs/stdlib_system.html#delete_file-delete-a-file))
 !!
@@ -204,6 +233,78 @@ public :: FS_ERROR
 !! ([Specification](../page/specs/stdlib_system.html#FS_ERROR_CODE))
 !!
 public :: FS_ERROR_CODE
+
+!> Version: experimental
+!>
+!> Integer constants representing the most common path types.
+!> ([Specification](../page/specs/stdlib_system.html))
+integer, parameter, public :: &
+    !> Represents an unknown path type
+    fs_type_unknown      = 0, &
+    !> Represents a regular file
+    fs_type_regular_file = 1, &
+    !> Represents a directory
+    fs_type_directory    = 2, &
+    !> Represents a symbolic link
+    fs_type_symlink      = 3
+
+!! version: experimental
+!!
+!! Checks if a path exists in the filesystem.
+!! ([Specification](../page/specs/stdlib_system.html#exists))
+!!
+!!### Summary
+!! Function to check whether the path exists in the fileystem at all.
+!! If the path does exist, returns the type of the path.
+!!
+!!### Description
+!!
+!! This function makes a system call (syscall) to retrieve metadata for the specified path and determines its type.
+!! It can distinguish between the following path types:
+!!
+!! - Regular File
+!! - Directory
+!! - Symbolic Link
+!!
+!! It does not follow symbolic links.
+!!
+!! It returns a constant representing the detected path type, or `type_unknown` if the type cannot be determined. 
+!! Any encountered errors are handled using `state_type`.
+!!
+public :: exists
+
+!! version: experimental
+!!
+!! Tests if a given path is a symbolic link.
+!! ([Specification](../page/specs/stdlib_system.html#is_symlink))
+!!
+!!### Summary
+!! Function to evaluate whether a specified path corresponds to a symbolic link.
+!!
+!!### Description
+!! 
+!! This function checks if a given file system path is a symbolic link either to a 
+!! file or a directory. It is cross-platform and utilizes native system calls. 
+!! It supports common operating systems such as Linux, macOS, Windows, and various UNIX-like environments.
+!!
+public :: is_symlink
+
+!! version: experimental
+!!
+!! Tests if a given path is a regular file.
+!! ([Specification](../page/specs/stdlib_system.html#is_file))
+!!
+!!### Summary
+!! Function to evaluate whether a specified path corresponds to a regular file.
+!!
+!!### Description
+!! 
+!! This function checks if a given file system path is a regular file. 
+!! It follows symbolic links to return the status of the `target`.
+!! It is cross-platform and utilizes native system calls. 
+!! It supports common operating systems such as Linux, macOS, Windows, and various UNIX-like environments.
+!!
+public :: is_file
      
 ! CPU clock ticks storage
 integer, parameter, private :: TICKS = int64
@@ -896,33 +997,51 @@ logical function is_directory(path)
     
 end function is_directory
 
-! A helper function to get the result of the C function `strerror`.
-! `strerror` is a function provided by `<string.h>`. 
-! It returns a string describing the meaning of `errno` in the C header `<errno.h>`
-function c_get_strerror() result(str)
+! A Helper function to convert C character arrays to Fortran character strings
+function to_f_char(c_str_ptr, len) result(f_str)
+    type(c_ptr), intent(in) :: c_str_ptr
+    ! length of the string excluding the null character
+    integer(kind=c_size_t), intent(in) :: len
+    character(:), allocatable :: f_str
+
+    integer :: i
+    character(kind=c_char), pointer :: c_str(:)
+
+    call c_f_pointer(c_str_ptr, c_str, [len])
+
+    allocate(character(len=len) :: f_str)
+
+    do concurrent (i=1:len)
+        f_str(i:i) = c_str(i)
+    end do
+end function to_f_char
+
+! A helper function to get the string describing an error from C functions.
+! If `winapi` is  false or not present, uses `strerror` provided by `<string.h>`
+! Otherwise, uses `strerror` on unix and `FormatMessageA` on windows.
+function c_get_strerror(winapi) result(str)
     character(len=:), allocatable :: str
+    logical, optional, intent(in) :: winapi
 
     interface
-        type(c_ptr) function strerror(len) bind(C, name='stdlib_strerror')
-            import c_size_t, c_ptr
+        type(c_ptr) function strerror(len, winapi) bind(C, name='stdlib_strerror')
+            import c_size_t, c_ptr, c_bool
             implicit none
             integer(c_size_t), intent(out) :: len
+            logical, intent(in) :: winapi
         end function strerror
     end interface
 
     type(c_ptr) :: c_str_ptr
     integer(c_size_t) :: len, i
     character(kind=c_char), pointer :: c_str(:)
+    logical :: winapi_
 
-    c_str_ptr = strerror(len)
+    winapi_ = optval(winapi, .false.)
 
-    call c_f_pointer(c_str_ptr, c_str, [len])
+    c_str_ptr = strerror(len, winapi_)
 
-    allocate(character(len=len) :: str)
-
-    do concurrent (i=1:len)
-        str(i:i) = c_str(i)
-    end do
+    str = to_f_char(c_str_ptr, len)
 end function c_get_strerror
 
 !! makes an empty directory
@@ -1024,6 +1143,56 @@ subroutine remove_directory(path, err)
 
 end subroutine remove_directory
 
+subroutine get_cwd(cwd, err)
+    character(:), allocatable, intent(out) :: cwd
+    type(state_type), optional, intent(out) :: err
+    type(state_type) :: err0
+
+    interface
+        type(c_ptr) function stdlib_get_cwd(len, stat) bind(C, name='stdlib_get_cwd')
+            import c_ptr, c_size_t
+            integer(c_size_t), intent(out) :: len
+            integer :: stat
+        end function stdlib_get_cwd
+    end interface
+
+    type(c_ptr) :: c_str_ptr
+    integer(c_size_t) :: len
+    integer :: stat
+
+    c_str_ptr = stdlib_get_cwd(len, stat)
+
+    if (stat /= 0) then
+        err0 = FS_ERROR_CODE(stat, c_get_strerror())
+        call err0%handle(err)
+    end if
+
+    cwd = to_f_char(c_str_ptr, len)
+
+end subroutine get_cwd
+
+subroutine set_cwd(path, err)
+    character(len=*), intent(in) :: path
+    type(state_type), optional, intent(out) :: err
+    type(state_type) :: err0
+
+    interface
+        integer function stdlib_set_cwd(path) bind(C, name='stdlib_set_cwd')
+            import c_char
+            character(kind=c_char), intent(in) :: path(*)
+        end function stdlib_set_cwd
+    end interface
+
+    integer :: code
+
+    code = stdlib_set_cwd(to_c_char(trim(path)))
+
+    if (code /= 0) then
+        err0 = FS_ERROR_CODE(code, c_get_strerror())
+        call err0%handle(err)
+    end if
+end subroutine set_cwd
+
 !> Returns the file path of the null device for the current operating system.
 !>
 !> Version: Helper function.
@@ -1042,21 +1211,13 @@ function null_device() result(path)
         
     end interface
     
-    integer(c_size_t) :: i, len
+    integer(c_size_t) :: len
     type(c_ptr) :: c_path_ptr
-    character(kind=c_char), pointer :: c_path(:)    
 
     ! Call the C function to get the null device path and its length
     c_path_ptr = process_null_device(len)
-    call c_f_pointer(c_path_ptr,c_path,[len])
 
-    ! Allocate the Fortran string with the length returned from C
-    allocate(character(len=len) :: path)
-        
-    do concurrent (i=1:len)
-        path(i:i) = c_path(i)
-    end do
-        
+    path = to_f_char(c_path_ptr, len)
 end function null_device
 
 !> Delete a file at the given path.
@@ -1133,6 +1294,57 @@ pure function FS_ERROR(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,&
     state = state_type(STDLIB_FS_ERROR, a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,&
         a13,a14,a15,a16,a17,a18,a19,a20)
 end function FS_ERROR
+
+! checks if a path exists and returns its type
+function exists(path, err) result(fs_type)
+    character(*), intent(in) :: path
+    type(state_type), optional, intent(out) :: err
+    integer :: fs_type
+
+    type(state_type) :: err0
+
+    interface
+        integer function stdlib_exists(path, stat) bind(C, name='stdlib_exists')
+            import c_char, c_int
+            character(kind=c_char), intent(in) :: path(*)
+            ! to return the error code if any
+            integer(kind=c_int), intent(out) :: stat
+        end function stdlib_exists
+    end interface
+
+    integer(kind=c_int) :: stat
+
+    fs_type = stdlib_exists(to_c_char(trim(path)), stat)
+
+    ! an error occurred
+    if (stat /= 0) then
+        err0 = FS_ERROR_CODE(stat, c_get_strerror())
+        call err0%handle(err)
+    end if
+end function exists
+
+! public convenience wrapper to check if path is a symbolic link
+logical function is_symlink(path)
+    character(len=*), intent(in) :: path
+    type(state_type) :: err
+
+    is_symlink = exists(path, err) == fs_type_symlink
+end function is_symlink
+
+! checks if path is a regular file.
+! It follows symbolic links and returns the status of the `target`.
+logical function is_file(path)
+    character(len=*), intent(in) :: path
+
+    interface
+        logical(c_bool) function stdlib_is_file(path) bind(C, name='stdlib_is_file')
+            import c_char, c_bool
+            character(kind=c_char) :: path(*)
+        end function stdlib_is_file
+    end interface
+
+    is_file = logical(stdlib_is_file(to_c_char(trim(path))))
+end function is_file
 
 character function path_sep()
     if (OS_TYPE() == OS_WINDOWS) then
